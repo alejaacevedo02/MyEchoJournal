@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.plcoding.echojournal.core.presentation.designsystem.theme.EchoJournalTheme
 import com.plcoding.echojournal.core.presentation.designsystem.theme.bgGradient
+import com.plcoding.echojournal.echos.presentation.echos.components.EchoFilterRow
 import com.plcoding.echojournal.echos.presentation.echos.components.EchoRecordFloatingActionButton
 import com.plcoding.echojournal.echos.presentation.echos.components.EchosEmptyBackground
 import com.plcoding.echojournal.echos.presentation.echos.components.EchosTopBar
@@ -41,7 +42,7 @@ fun EchosScreen(
     Scaffold(
         floatingActionButton = {
             EchoRecordFloatingActionButton(
-                onClick = {onAction(EchosAction.OnFabClick)}
+                onClick = { onAction(EchosAction.OnFabClick) }
             )
         },
         topBar = {
@@ -56,6 +57,17 @@ fun EchosScreen(
                 .background(MaterialTheme.colorScheme.bgGradient)
                 .padding(innerPadding)
         ) {
+            EchoFilterRow(
+                moodChipContent = state.moodChipContent,
+                hasActiveMoodFilters = state.hasActiveMoodFilters,
+                hasActiveTopicFilters = state.hasActiveTopicFilters,
+                selectedEchoFilterChip = state.selectedEchoFilterChip,
+                moods = state.moods,
+                topicChipTitle = state.topicChipTitle,
+                topics = state.topics,
+                onAction = onAction,
+                modifier = Modifier.fillMaxWidth()
+            )
             when {
                 state.isLoadingData -> {
                     CircularProgressIndicator(
