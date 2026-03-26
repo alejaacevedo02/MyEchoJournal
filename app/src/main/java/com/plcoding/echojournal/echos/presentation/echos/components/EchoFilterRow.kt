@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -25,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.echojournal.R
 import com.plcoding.echojournal.core.presentation.designsystem.chips.MultiChoiceChip
 import com.plcoding.echojournal.core.presentation.designsystem.dropdown.Selectable
-import com.plcoding.echojournal.core.presentation.designsystem.dropdown.SelectableDropdownOptionsMenu
+import com.plcoding.echojournal.core.presentation.designsystem.dropdown.SelectableDropDownOptionsMenu
 import com.plcoding.echojournal.core.presentation.util.UiText
 import com.plcoding.echojournal.echos.presentation.echos.EchosAction
-import com.plcoding.echojournal.echos.presentation.echos.models.EchosFilterChip
+import com.plcoding.echojournal.echos.presentation.echos.models.EchoFilterChip
 import com.plcoding.echojournal.echos.presentation.echos.models.MoodChipContent
 import com.plcoding.echojournal.echos.presentation.models.MoodUi
 
@@ -37,7 +36,7 @@ import com.plcoding.echojournal.echos.presentation.models.MoodUi
 fun EchoFilterRow(
     moodChipContent: MoodChipContent,
     hasActiveMoodFilters: Boolean,
-    selectedEchoFilterChip: EchosFilterChip?,
+    selectedEchoFilterChip: EchoFilterChip?,
     moods: List<Selectable<MoodUi>>,
     topicChipTitle: UiText,
     hasActiveTopicFilters: Boolean,
@@ -46,19 +45,17 @@ fun EchoFilterRow(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
+
     var dropDownOffset by remember {
         mutableStateOf(IntOffset.Zero)
     }
-
     val configuration = LocalConfiguration.current
     val dropDownMaxHeight = (configuration.screenHeightDp * 0.3f).dp
+
     FlowRow(
         modifier = modifier
             .padding(16.dp)
-            .onGloballyPositioned{
+            .onGloballyPositioned {
                 dropDownOffset = IntOffset(
                     x = 0,
                     y = it.size.height
@@ -67,10 +64,11 @@ fun EchoFilterRow(
         verticalArrangement = Arrangement.Center,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-
         MultiChoiceChip(
             displayText = moodChipContent.title.asString(),
-            onClick = { onAction(EchosAction.OnMoodChipClick) },
+            onClick = {
+                onAction(EchosAction.OnMoodChipClick)
+            },
             leadingContent = {
                 if (moodChipContent.iconsRes.isNotEmpty()) {
                     Row(
@@ -81,90 +79,93 @@ fun EchoFilterRow(
                             Image(
                                 imageVector = ImageVector.vectorResource(iconRes),
                                 contentDescription = moodChipContent.title.asString(),
-                                modifier = Modifier.height(16.dp)
+                                modifier = Modifier
+                                    .height(16.dp)
                             )
                         }
-
                     }
                 }
             },
             isClearVisible = hasActiveMoodFilters,
+            isDropDownVisible = selectedEchoFilterChip == EchoFilterChip.MOODS,
+            isHighlighted = hasActiveMoodFilters || selectedEchoFilterChip == EchoFilterChip.MOODS,
             onClearButtonClick = {
-                onAction(EchosAction.OnRemoveFiltersClick(EchosFilterChip.MOODS))
+                onAction(EchosAction.OnRemoveFilters(EchoFilterChip.MOODS))
             },
-            isHighlighted = hasActiveMoodFilters || selectedEchoFilterChip == EchosFilterChip.MOODS,
-            isDropDownVisible = selectedEchoFilterChip == EchosFilterChip.MOODS,
-            dropdownMenu = {
-                SelectableDropdownOptionsMenu(
+            dropDownMenu = {
+                SelectableDropDownOptionsMenu(
                     items = moods,
-                    itemsDisplayText = { moodUi -> moodUi.title.asString(context) },
-                    onDismiss = { onAction(EchosAction.OnDismissMoodDropdown) },
-                    key = { moodUi -> moodUi.title },
+                    itemDisplayText = { moodUi -> moodUi.title.asString(context) },
+                    onDismiss = {
+                        onAction(EchosAction.OnDismissMoodDropdown)
+                    },
+                    key = { moodUi -> moodUi.title.asString(context) },
                     onItemClick = { moodUi ->
                         onAction(EchosAction.OnFilterByMoodClick(moodUi.item))
                     },
-                    dropdownOffset = dropDownOffset,
-                    maxDropdownHeight = dropDownMaxHeight,
+                    dropDownOffset = dropDownOffset,
+                    maxDropDownHeight = dropDownMaxHeight,
                     leadingIcon = { moodUi ->
                         Image(
                             imageVector = ImageVector.vectorResource(moodUi.iconSet.fill),
                             contentDescription = moodUi.title.asString(),
-                            modifier = Modifier.padding(8.dp)
                         )
                     }
-
                 )
-
-            }
+            },
         )
+
         MultiChoiceChip(
             displayText = topicChipTitle.asString(),
-            onClick = { onAction(EchosAction.OnTopicChipClick) },
-            isClearVisible = hasActiveTopicFilters,
-            onClearButtonClick = {
-                onAction(EchosAction.OnRemoveFiltersClick(EchosFilterChip.TOPICS))
+            onClick = {
+                onAction(EchosAction.OnTopicChipClick)
             },
-            isHighlighted = hasActiveTopicFilters || selectedEchoFilterChip == EchosFilterChip.TOPICS,
-            isDropDownVisible = selectedEchoFilterChip == EchosFilterChip.TOPICS,
-            dropdownMenu = {
+            isClearVisible = hasActiveTopicFilters,
+            isDropDownVisible = selectedEchoFilterChip == EchoFilterChip.TOPICS,
+            isHighlighted = hasActiveTopicFilters || selectedEchoFilterChip == EchoFilterChip.TOPICS,
+            onClearButtonClick = {
+                onAction(EchosAction.OnRemoveFilters(EchoFilterChip.TOPICS))
+            },
+            dropDownMenu = {
                 if (topics.isEmpty()) {
-                    SelectableDropdownOptionsMenu(
+                    SelectableDropDownOptionsMenu(
                         items = listOf(
                             Selectable(
                                 item = stringResource(R.string.you_don_t_have_any_topics_yet),
                                 selected = false
                             )
                         ),
-                        itemsDisplayText = { it },
-                        onDismiss = { onAction(EchosAction.OnDismissTopicDropdown) },
+                        itemDisplayText = { it },
+                        onDismiss = {
+                            onAction(EchosAction.OnDismissTopicDropDown)
+                        },
                         key = { it },
-                        dropdownOffset = dropDownOffset,
-                        maxDropdownHeight = dropDownMaxHeight,
                         onItemClick = {},
+                        dropDownOffset = dropDownOffset,
+                        maxDropDownHeight = dropDownMaxHeight
                     )
                 } else {
-                    SelectableDropdownOptionsMenu(
+                    SelectableDropDownOptionsMenu(
                         items = topics,
-                        itemsDisplayText = { topic -> topic },
-                        onDismiss = { onAction(EchosAction.OnDismissTopicDropdown) },
+                        itemDisplayText = { topic -> topic },
+                        onDismiss = {
+                            onAction(EchosAction.OnDismissTopicDropDown)
+                        },
                         key = { topic -> topic },
                         onItemClick = { topic ->
                             onAction(EchosAction.OnFilterByTopicClick(topic.item))
                         },
-                        dropdownOffset = dropDownOffset,
-                        maxDropdownHeight = dropDownMaxHeight,
+                        dropDownOffset = dropDownOffset,
+                        maxDropDownHeight = dropDownMaxHeight,
                         leadingIcon = { topic ->
                             Image(
                                 imageVector = ImageVector.vectorResource(R.drawable.hashtag),
                                 contentDescription = topic,
-                                modifier = Modifier.padding(8.dp)
                             )
                         }
                     )
-
                 }
             }
-
         )
     }
 }

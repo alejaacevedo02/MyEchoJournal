@@ -60,13 +60,14 @@ fun EchosScreen(
             EchoFilterRow(
                 moodChipContent = state.moodChipContent,
                 hasActiveMoodFilters = state.hasActiveMoodFilters,
-                hasActiveTopicFilters = state.hasActiveTopicFilters,
                 selectedEchoFilterChip = state.selectedEchoFilterChip,
                 moods = state.moods,
                 topicChipTitle = state.topicChipTitle,
+                hasActiveTopicFilters = state.hasActiveTopicFilters,
                 topics = state.topics,
                 onAction = onAction,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
             )
             when {
                 state.isLoadingData -> {

@@ -36,22 +36,22 @@ import com.plcoding.echojournal.core.presentation.designsystem.dropdown.Selectab
 import com.plcoding.echojournal.core.presentation.designsystem.theme.EchoJournalTheme
 
 @Composable
-fun <T> SelectableDropdownOptionsMenu(
+fun <T> SelectableDropDownOptionsMenu(
     items: List<Selectable<T>>,
-    itemsDisplayText: (T) -> String,
+    itemDisplayText: (T) -> String,
     onDismiss: () -> Unit,
     key: (T) -> Any,
     onItemClick: (Selectable<T>) -> Unit,
     modifier: Modifier = Modifier,
     leadingIcon: (@Composable (T) -> Unit)? = null,
-    dropdownOffset: IntOffset = IntOffset.Zero,
-    maxDropdownHeight: Dp = Dp.Unspecified,
+    dropDownOffset: IntOffset = IntOffset.Zero,
+    maxDropDownHeight: Dp = Dp.Unspecified,
     dropdownExtras: SelectableOptionsExtras? = null
 ) {
 
     Popup(
         onDismissRequest = onDismiss,
-        offset = dropdownOffset
+        offset = dropDownOffset
     ) {
         Surface(
             color = MaterialTheme.colorScheme.surface,
@@ -59,7 +59,7 @@ fun <T> SelectableDropdownOptionsMenu(
             shadowElevation = 4.dp,
             modifier = modifier
                 .heightIn(
-                    max = maxDropdownHeight
+                    max = maxDropDownHeight
                 )
                 .fillMaxWidth()
                 .padding(
@@ -100,7 +100,7 @@ fun <T> SelectableDropdownOptionsMenu(
                     ) {
                         leadingIcon?.invoke(selectable.item)
                         Text(
-                            text = itemsDisplayText(selectable.item),
+                            text = itemDisplayText(selectable.item),
                             modifier = Modifier
                                 .weight(1f)
                         )
@@ -149,9 +149,9 @@ fun <T> SelectableDropdownOptionsMenu(
 
 @Preview
 @Composable
-fun SelectableDropdownOptionsMenuPreview() {
+fun SelectableDropDownOptionsMenuPreview() {
     EchoJournalTheme {
-        SelectableDropdownOptionsMenu(
+        SelectableDropDownOptionsMenu(
             items = (1..5).map {
                 "Hello world $it"
             }.asUnselectedItems(),
@@ -163,13 +163,13 @@ fun SelectableDropdownOptionsMenuPreview() {
                     contentDescription = null
                 )
             },
-            maxDropdownHeight = 500.dp,
+            maxDropDownHeight = 500.dp,
             dropdownExtras = SelectableOptionsExtras(
                 text = "Add topic",
                 onClick = {}
             ),
             key = { it },
-            itemsDisplayText = { it }
+            itemDisplayText = { it }
         )
     }
 }

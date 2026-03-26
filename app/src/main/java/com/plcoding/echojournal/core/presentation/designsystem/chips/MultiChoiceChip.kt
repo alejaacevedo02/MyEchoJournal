@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plcoding.echojournal.R
 import com.plcoding.echojournal.core.presentation.designsystem.theme.EchoJournalTheme
-import com.plcoding.echojournal.core.presentation.designsystem.theme.Gray6
 
 @Composable
 fun MultiChoiceChip(
@@ -41,7 +39,7 @@ fun MultiChoiceChip(
     onClearButtonClick: () -> Unit,
     isHighlighted: Boolean,
     isDropDownVisible: Boolean,
-    dropdownMenu: @Composable () -> Unit,
+    dropDownMenu: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     leadingContent: (@Composable () -> Unit)? = null
 ) {
@@ -99,7 +97,7 @@ fun MultiChoiceChip(
                 }
             }
             if (isDropDownVisible) {
-                dropdownMenu()
+                dropDownMenu()
             }
         }
 
@@ -117,7 +115,7 @@ private fun MultiChoiceChipPreview() {
             onClearButtonClick = {},
             isHighlighted = false,
             isDropDownVisible = true,
-            dropdownMenu = {},
+            dropDownMenu = {},
             leadingContent = {
                 Icon(
                     imageVector = Icons.Default.Star,

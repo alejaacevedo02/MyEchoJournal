@@ -1,6 +1,6 @@
 package com.plcoding.echojournal.echos.presentation.echos
 
-import com.plcoding.echojournal.echos.presentation.echos.models.EchosFilterChip
+import com.plcoding.echojournal.echos.presentation.echos.models.EchoFilterChip
 import com.plcoding.echojournal.echos.presentation.models.MoodUi
 
 sealed interface EchosAction {
@@ -10,10 +10,10 @@ sealed interface EchosAction {
     data object OnDismissMoodDropdown : EchosAction
     data object OnTopicChipClick : EchosAction
 
-    data object OnDismissTopicDropdown : EchosAction
+    data object OnDismissTopicDropDown : EchosAction
 
     data class OnFilterByTopicClick(val topic: String) : EchosAction
-    data class OnRemoveFiltersClick(val filterType: EchosFilterChip) : EchosAction
+    data class OnRemoveFilters(val filterType: EchoFilterChip) : EchosAction
     data object OnFabClick : EchosAction
     data object OnFabLongClick : EchosAction
 
